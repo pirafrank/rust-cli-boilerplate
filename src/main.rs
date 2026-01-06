@@ -1,3 +1,5 @@
+mod constants;
+use crate::constants::*;
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 use clap_verbosity_flag::{InfoLevel, Verbosity};
@@ -10,7 +12,13 @@ use log::{debug, info};
     version = env!("CARGO_PKG_VERSION"),
     author = env!("CARGO_PKG_AUTHORS"),
     about = env!("CARGO_PKG_DESCRIPTION"),
-    long_about = None
+    long_version = long_version(),
+    help_template = "\n\n{name} - {about}\n\n\
+        {usage-heading} {usage}\n\n\
+        {all-args}{after-help}",
+    after_help = format!("For more information, visit: {}\n\n\
+        If you encounter any issues, please report them at:\n{}/issues\n",
+        env!("CARGO_PKG_REPOSITORY"), env!("CARGO_PKG_REPOSITORY")),
 )]
 struct Cli {
     /// Subcommand to execute
@@ -37,6 +45,23 @@ enum Commands {
         /// Message to echo
         message: String,
     },
+}
+
+/// Returns a static string containing the version information.
+/// It uses Box::leak to convert a String into a &'static str.
+/// This is a workaround to avoid using a global static variable.
+fn long_version() -> &'static str {
+    #[cfg(static_linking)]
+    let linking_type = "statically linked";
+    #[cfg(dynamic_linking)]
+    let linking_type = "dynamically linked";
+    Box::leak(
+        format!(
+            "\nVersion   : {}\nCommit    : {}\nBuild Date: {}\nBuilt with: {} ({})",
+            VERSION, COMMIT, BUILD_DATE, COMPILE_C_LIB, linking_type
+        )
+        .into_boxed_str(),
+    )
 }
 
 fn run() -> Result<()> {
