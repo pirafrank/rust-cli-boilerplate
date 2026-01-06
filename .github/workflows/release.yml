@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 env:
-  BIN_NAME: poof
+  BIN_NAME: rust-cli-boilerplate
 
 jobs:
   checks:

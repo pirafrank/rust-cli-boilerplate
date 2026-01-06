@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 env:
-  BIN_NAME: poof
+  BIN_NAME: rust-cli-boilerplate
 
 jobs:
   make_matrix:

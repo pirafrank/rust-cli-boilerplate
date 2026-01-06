@@ -152,10 +152,10 @@ coverage:
 # see https://github.com/pirafrank/dotfiles/blob/main/bin/browse
 # Browse issues on GitHub
 issues:
-  browse "https://github.com/pirafrank/poof/issues"
+  browse "https://github.com/pirafrank/rust-cli-boilerplate/issues"
 
 # Assumes you have the `browse` command in PATH
 # see https://github.com/pirafrank/dotfiles/blob/main/bin/browse
 # Browse coverage report on Codecov
 browse-coverage:
-  browse "https://app.codecov.io/github/pirafrank/poof"
+  browse "https://app.codecov.io/github/pirafrank/rust-cli-boilerplate"
