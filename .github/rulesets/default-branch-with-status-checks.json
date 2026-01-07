@@ -1,0 +1,93 @@
+{
+  "id": 11628449,
+  "name": "default-branch",
+  "target": "branch",
+  "source_type": "Repository",
+  "source": "pirafrank/rust-cli-boilerplate",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "exclude": [],
+      "include": [
+        "~DEFAULT_BRANCH"
+      ]
+    }
+  },
+  "rules": [
+    {
+      "type": "deletion"
+    },
+    {
+      "type": "non_fast_forward"
+    },
+    {
+      "type": "required_linear_history"
+    },
+    {
+      "type": "required_signatures"
+    },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 0,
+        "dismiss_stale_reviews_on_push": false,
+        "required_reviewers": [],
+        "require_code_owner_review": false,
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": false,
+        "allowed_merge_methods": [
+          "squash",
+          "rebase"
+        ]
+      }
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": false,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [
+          {
+            "context": "CI checks (macos-14)",
+            "integration_id": 15368
+          },
+          {
+            "context": "CI checks (ubuntu-24.04)",
+            "integration_id": 15368
+          },
+          {
+            "context": "Build for aarch64-apple-darwin",
+            "integration_id": 15368
+          },
+          {
+            "context": "Build for aarch64-unknown-linux-gnu",
+            "integration_id": 15368
+          },
+          {
+            "context": "Build for aarch64-unknown-linux-musl",
+            "integration_id": 15368
+          },
+          {
+            "context": "Build for x86_64-apple-darwin",
+            "integration_id": 15368
+          },
+          {
+            "context": "Build for x86_64-unknown-linux-gnu",
+            "integration_id": 15368
+          },
+          {
+            "context": "Build for x86_64-unknown-linux-musl",
+            "integration_id": 15368
+          }
+        ]
+      }
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_id": 5,
+      "actor_type": "RepositoryRole",
+      "bypass_mode": "always"
+    }
+  ]
+}
