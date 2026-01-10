@@ -37,6 +37,7 @@ jobs:
           compare_to: ${{ github.ref }}
 
   make_matrix:
+    name: Create matrix
     runs-on: ubuntu-latest
     needs: checks
     outputs:

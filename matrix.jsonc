@@ -6,7 +6,8 @@
         { "os": "ubuntu-24.04", "target": "aarch64-unknown-linux-musl", "builder": "cargo" },
         { "os": "macos-14", "target": "x86_64-apple-darwin", "builder": "cargo" },
         { "os": "macos-14", "target": "aarch64-apple-darwin", "builder": "cargo" },
-        { "os": "windows-2022", "target": "x86_64-pc-windows-msvc", "builder": "cargo" },
-        { "os": "windows-2022", "target": "aarch64-pc-windows-msvc", "builder": "cargo" }
+        { "os": "windows-2025", "target": "x86_64-pc-windows-msvc", "builder": "cargo" },
+        { "os": "windows-2025", "target": "aarch64-pc-windows-msvc", "builder": "cargo" },
+        { "os": "windows-2025", "target": "x86_64-pc-windows-gnu", "builder": "cargo" }
     ]
 }

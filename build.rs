@@ -23,10 +23,11 @@ fn c_library_detection() {
     let is_gnu = target.contains("gnu");
     let is_darwin = target.contains("darwin");
     let is_freebsd = target.contains("freebsd");
+    let is_windows = target.contains("windows");
 
     // set the c_lib environment variable
     // note: by default, Rust GNU builds target and link against glibc.
-    if is_gnu {
+    if is_gnu && !is_windows {
         let glibc_version = get_glibc_version().unwrap();
         println!("cargo:rustc-env=C_LIB=glibc v{}", glibc_version);
     } else if is_musl {
@@ -35,6 +36,12 @@ fn c_library_detection() {
         println!("cargo:rustc-env=C_LIB=libSystem");
     } else if is_freebsd {
         println!("cargo:rustc-env=C_LIB=libc");
+    } else if is_windows && !is_gnu {
+        println!("cargo:rustc-env=C_LIB=msvc");
+    } else if is_windows && is_gnu {
+        println!("cargo:rustc-env=C_LIB=mingw");
+    } else {
+        println!("cargo:rustc-env=C_LIB=unknown");
     }
 
     // detect if '-static' is passed for glibc targets
