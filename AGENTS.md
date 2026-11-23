@@ -27,7 +27,9 @@ src/
 examples/gen_man.rs          # man-page generation (reuses src/cli.rs and src/constants.rs)
 build.rs                     # exposes commit hash, build date, C lib, and linking type to the crate
 hooks/                       # Git hooks (pre-commit, pre-push, commit-msg)
-hooks_scripts/               # helper scripts used by hooks and recipes
+hooks_scripts/               # helper scripts for hooks and recipes, plus `init_template.py` (`just init`)
+                             # and its tests (`test_init_template.py`)
+tests/integration.rs         # integration tests running the compiled binary
 scripts/release/             # release tooling: build-environment records, asset finalizing, tests
 .github/workflows/           # CI, cross-build, coverage, licenses, security, and release jobs
 .github/actions/             # reusable composite actions
@@ -46,13 +48,17 @@ Commented-out dependencies in `Cargo.toml` (for example `dirs`, `tempfile`, `ass
 
 - Rust toolchain: **stable**, as set in `rust-toolchain.toml`, with `rustfmt`, `clippy`, and
   `llvm-tools-preview`.
-- Edition: **2021**. `Cargo.toml` declares the MSRV in `rust-version`.
+- Edition: **2024**. `Cargo.toml` declares the MSRV in `rust-version`.
 - MSRV is `rust-version` in `Cargo.toml`; `.github/workflows/msrv.yml` reads it from there.
 - Release targets are defined in `matrix.jsonc`: Linux (gnu and musl, x86_64 and aarch64), macOS
   (x86_64 and aarch64), and Windows (msvc x86_64/aarch64, gnu x86_64). Keep `matrix.jsonc`,
   `rust-toolchain.toml`, and the workflows consistent when adding or removing a target.
 - `build.rs` and `src/constants.rs` contain platform-specific `cfg` branches (including
-  Windows); verify them on all affected platforms when changing them.
+  Windows); verify them on all affected platforms when changing them. `COMPILE_C_LIB` always
+  comes from the `C_LIB` value computed in `build.rs` (no per-OS `cfg` split).
+- On Windows, `just` recipes and Git hooks require `bash` (Git for Windows provides it) plus
+  standard Unix tools such as `grep`; the justfile does not target PowerShell. `just init` only
+  needs Python (`hooks_scripts/init_template.py`, tested by `hooks_scripts/test_init_template.py`).
 
 ## Commands
 
@@ -63,6 +69,8 @@ just check                 # cargo check --all-targets
 just build                 # cargo build
 just test                  # cargo test -- --nocapture
 just test-integration      # integration test target
+just test-init             # tests for hooks_scripts/init_template.py
+just init                  # customize the template (names, description, author)
 just fmt                   # format source
 just fmt-check             # check formatting
 just lint                  # clippy on normal targets, warnings denied
@@ -127,7 +135,7 @@ output.
 
 Keep public APIs documented. The crate enables `#![warn(missing_docs)]`; check with
 `just docs-verify-public`. Follow `rustfmt.toml`: four spaces, Unix newlines, 100-column maximum,
-Rust 2021 formatting, and reordered imports/modules. Group imports as standard library,
+Rust 2024 formatting, and reordered imports/modules. Group imports as standard library,
 external crates, then `crate::` imports. Use snake_case for functions and modules, PascalCase
 for types and traits, and SCREAMING_SNAKE_CASE for constants. Names disallowed by
 `clippy.toml` include `foo`, `baz`, `pippo`, and `pluto`.

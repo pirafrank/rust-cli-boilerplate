@@ -45,13 +45,13 @@ A template for cross-platform binary CLI projects written in Rust.
 - **Multi-platform support** configured via `rust-toolchain.toml`:
   - Linux: x86_64 and aarch64 (GNU and musl)
   - macOS: x86_64 and aarch64 (Darwin)
-  - FreeBSD: x86_64
+  - Windows: x86_64 and aarch64 (MSVC), x86_64 (GNU)
 - **Build matrix** configuration (`matrix.jsonc`) for cross-platform CI builds
 
 ### Code Quality & Standards
 
 - **Rustfmt configuration** (`rustfmt.toml`) with:
-  - Edition 2021 style
+  - Edition 2024 style
   - 100 character line width
   - Unix line endings
   - Auto-reordering of imports and modules
@@ -144,7 +144,15 @@ These cargo plugins enhance the development workflow but are not strictly requir
 
 2. Clone the newly created repo locally or in a Codespace
 
-3. Setup the enviroment and make the first build:
+3. Customize the template. The script asks for the repository owner and name, crate name, tool name, description and author, then updates crate name, binary name, repo URLs, workflows, `Cargo.toml` and the README title and description:
+
+```bash
+just init
+```
+
+   Then review the README and `AGENTS.md`. Run `just init --help` for non-interactive usage.
+
+4. Setup the enviroment and make the first build:
 
 ```bash
 # Install git hooks

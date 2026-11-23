@@ -1,4 +1,4 @@
-//! Build script for poof.
+//! Build script for rust-cli-boilerplate.
 //!
 //! Sets compile-time environment variables: git commit hash, build date,
 //! C library name/version, and linking mode (static vs dynamic).
@@ -9,17 +9,17 @@ use std::{env, process::Command};
 #[macro_use]
 extern crate build_cfg;
 
+/// Returns the glibc version of the build host, when the target is glibc-based.
+#[cfg(all(target_os = "linux", target_env = "gnu"))]
 fn get_glibc_version() -> Option<String> {
-    // Set the glibc version if applicable
-    if build_cfg!(target_env = "gnu") {
-        let ver = glibc_version::get_version().unwrap();
-        let glibc_version = format!("{}.{}", ver.major, ver.minor);
-        println!("cargo:rustc-env=GLIBC_VERSION={}", glibc_version);
-        Some(glibc_version)
-    } else {
-        println!("cargo:rustc-env=GLIBC_VERSION=");
-        None
-    }
+    let ver = glibc_version::get_version().ok()?;
+    Some(format!("{}.{}", ver.major, ver.minor))
+}
+
+/// The `glibc_version` crate is only available on glibc hosts.
+#[cfg(not(all(target_os = "linux", target_env = "gnu")))]
+fn get_glibc_version() -> Option<String> {
+    None
 }
 
 fn c_library_detection() {
@@ -33,8 +33,10 @@ fn c_library_detection() {
     // set the c_lib environment variable
     // note: by default, Rust GNU builds target and link against glibc.
     if is_gnu && !is_windows {
-        let glibc_version = get_glibc_version().unwrap();
-        println!("cargo:rustc-env=C_LIB=glibc v{}", glibc_version);
+        match get_glibc_version() {
+            Some(version) => println!("cargo:rustc-env=C_LIB=glibc v{}", version),
+            None => println!("cargo:rustc-env=C_LIB=glibc"),
+        }
     } else if is_musl {
         println!("cargo:rustc-env=C_LIB=musl");
     } else if is_darwin {
