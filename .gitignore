@@ -56,3 +56,6 @@ data/*
 *.lcov
 *.info
 
+
+# generated man pages
+man/
