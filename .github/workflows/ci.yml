@@ -59,6 +59,10 @@ jobs:
           ./run_schema_validation.sh
           deactivate
 
+      - name: Test template init script
+        if: runner.os == 'Linux'
+        run: just test-init
+
       - name: Perform CI checks
         run: just ci
 
