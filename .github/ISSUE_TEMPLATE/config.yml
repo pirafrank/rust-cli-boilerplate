@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "Report a vulnerability privately"
+    url: "https://github.com/pirafrank/rust-cli-boilerplate/security/advisories/new"
+    about: "Coordinate security reports privately with the maintainer."
+  - name: "Ask a question"
+    url: "https://github.com/pirafrank/rust-cli-boilerplate/discussions/new?category=q-a"
+    about: "Ask questions and get help from the community."
+  - name: "Discuss a topic"
+    url: "https://github.com/pirafrank/rust-cli-boilerplate/discussions/new"
+    about: "Discuss ideas and topics with the community."
