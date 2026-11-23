@@ -51,4 +51,8 @@ clap_mangen = "0.3"
 [build-dependencies]
 build_cfg = "1.1.0"
 jiff = { version = "0.2", default-features = false, features = ["std"] }
+
+# glibc_version only builds on glibc hosts and is only needed there.
+[target.'cfg(all(target_os = "linux", target_env = "gnu"))'.build-dependencies]
 glibc_version = "0.1.2"
+
