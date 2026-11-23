@@ -22,6 +22,7 @@ workflows, `cargo-deny` and `git-cliff` configuration, issue templates, and Depe
 src/
 ├── main.rs                  # logging, command dispatch, and top-level error handling
 ├── cli.rs                   # clap definition (arguments, subcommands) and long version output
+├── completions.rs           # shell completion generation (`completions --shell <shell>`)
 └── constants.rs             # build-time constants (version, commit, build date, C library)
 examples/gen_man.rs          # man-page generation (reuses src/cli.rs and src/constants.rs)
 build.rs                     # exposes commit hash, build date, C lib, and linking type to the crate

@@ -5,6 +5,7 @@
 
 use crate::constants::*;
 use clap::{Parser, Subcommand};
+use clap_complete::Shell;
 use clap_verbosity_flag::{InfoLevel, Verbosity};
 
 /// A Rust CLI boilerplate application
@@ -46,6 +47,13 @@ pub enum Commands {
     Echo {
         /// Message to echo
         message: String,
+    },
+
+    /// Generate shell completions to stdout
+    Completions {
+        /// Shell to generate completions for
+        #[arg(long, short, value_enum)]
+        shell: Shell,
     },
 }
 

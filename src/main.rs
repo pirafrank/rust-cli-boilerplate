@@ -3,6 +3,7 @@
 #![warn(missing_docs)]
 
 mod cli;
+mod completions;
 mod constants;
 use crate::cli::{Cli, Commands};
 use anyhow::Result;
@@ -32,6 +33,9 @@ fn run() -> Result<()> {
         Commands::Echo { message } => {
             info!("Executing echo command");
             println!("{}", message);
+        }
+        Commands::Completions { shell } => {
+            completions::generate_completions(shell, &mut std::io::stdout());
         }
     }
 
