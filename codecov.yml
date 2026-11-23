@@ -6,9 +6,17 @@ coverage:
         threshold: 1%
     patch:
       default:
-        target: auto
-        threshold: 1%
+        target: 90%
+        threshold: 0%
 ignore:
   - "tests/*"
   - "build.rs"
-
+#
+# Notes:
+#
+# 'project' is the overall coverage target; 'auto' requires at least the coverage of the previous
+# commit in history.
+# 'patch' is the target for the lines changed in a pull request. It matches the threshold used by
+# `just coverage-diff`.
+# 'ignore' lists files and directories excluded from coverage analysis.
+# Codecov uses the configuration from your PR branch, not from main, by default.
