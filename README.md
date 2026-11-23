@@ -45,6 +45,7 @@ A template for cross-platform binary CLI projects written in Rust.
 - **Multi-platform support** configured via `rust-toolchain.toml`:
   - Linux: x86_64 and aarch64 (GNU and musl)
   - macOS: x86_64 and aarch64 (Darwin)
+  - FreeBSD: x86_64
   - Windows: x86_64 and aarch64 (MSVC), x86_64 (GNU)
 - **Build matrix** configuration (`matrix.jsonc`) for cross-platform CI builds
 

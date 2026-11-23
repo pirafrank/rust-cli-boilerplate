@@ -51,8 +51,9 @@ Commented-out dependencies in `Cargo.toml` (for example `dirs`, `tempfile`, `ass
 - Edition: **2024**. `Cargo.toml` declares the MSRV in `rust-version`.
 - MSRV is `rust-version` in `Cargo.toml`; `.github/workflows/msrv.yml` reads it from there.
 - Release targets are defined in `matrix.jsonc`: Linux (gnu and musl, x86_64 and aarch64), macOS
-  (x86_64 and aarch64), and Windows (msvc x86_64/aarch64, gnu x86_64). Keep `matrix.jsonc`,
-  `rust-toolchain.toml`, and the workflows consistent when adding or removing a target.
+  (x86_64 and aarch64), FreeBSD (x86_64), and Windows (msvc x86_64/aarch64, gnu x86_64). Keep
+  `matrix.jsonc`, `rust-toolchain.toml`, and the workflows consistent when adding or removing a
+  target.
 - `build.rs` and `src/constants.rs` contain platform-specific `cfg` branches (including
   Windows); verify them on all affected platforms when changing them. `COMPILE_C_LIB` always
   comes from the `C_LIB` value computed in `build.rs` (no per-OS `cfg` split).
