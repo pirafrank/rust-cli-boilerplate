@@ -1,4 +1,9 @@
-use chrono::Utc;
+//! Build script for poof.
+//!
+//! Sets compile-time environment variables: git commit hash, build date,
+//! C library name/version, and linking mode (static vs dynamic).
+
+use jiff::Timestamp;
 use std::{env, process::Command};
 
 #[macro_use]
@@ -75,9 +80,13 @@ fn main() {
 
     let git_hash = String::from_utf8(output.stdout).expect("Invalid UTF-8 sequence");
 
-    // today date
-    let now = Utc::now();
-    let build_date = now.format("%Y-%m-%d %H:%M:%S UTC").to_string();
+    // BUILD_DATE: use the env var when set (e.g. injected by the Nix flake for
+    // reproducibility).  Falls back to the current UTC time for normal cargo builds.
+    let build_date = std::env::var("BUILD_DATE").unwrap_or_else(|_| {
+        Timestamp::now()
+            .strftime("%Y-%m-%d %H:%M:%S UTC")
+            .to_string()
+    });
 
     // Set the environment variables
     println!("cargo:rustc-env=GIT_COMMIT_HASH={}", git_hash.trim());
