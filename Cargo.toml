@@ -2,7 +2,7 @@
 name = "rust-cli-boilerplate"
 authors = ["Francesco Pira (pirafrank)"]
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 repository = "https://github.com/pirafrank/rust-cli-boilerplate"
 documentation = "https://github.com/pirafrank/rust-cli-boilerplate/blob/main/README.md"
 description = "A template for binary CLI projects written in Rust"
