@@ -5,16 +5,21 @@ on:
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - '**/*.md'
-      - '**/*.json'
-      - '**/*.yml'
-      - '**/*.yaml'
-      - '**/*.txt'
+      - release/**
+      - pre/**
+    paths:
+      - 'matrix.jsonc'
+      - 'Cross.toml'
+      - 'cross.toml'
+      - '.github/workflows/ci_cross.yml'
+      - '.github/workflows/release.yml'
   workflow_dispatch:
 
 env:
   BIN_NAME: rust-cli-boilerplate
+
+permissions:
+  contents: read
 
 jobs:
   make_matrix:
@@ -26,13 +31,13 @@ jobs:
       MATRIX_FILE: matrix.jsonc
     steps:
       - name: Clone repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 1
 
       - id: set-matrix
         run: |
-          echo "matrix=$(grep -v '//' $MATRIX_FILE | jq -c '.')" >> "$GITHUB_OUTPUT"
+          echo "matrix=$(grep -v '//' "$MATRIX_FILE" | jq -c '.')" >> "$GITHUB_OUTPUT"
 
   build:
     name: Build for ${{ matrix.target }}
@@ -43,10 +48,15 @@ jobs:
       max-parallel: 5
     steps:
       - name: Clone repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
 
       - name: Install cross-compilation tools
         uses: taiki-e/setup-cross-toolchain-action@v1
@@ -59,10 +69,16 @@ jobs:
         run: cargo install cross
 
       - name: Build project using ${{ matrix.builder }}
-        run: ${{ matrix.builder }} build --target ${{ matrix.target }}
+        shell: bash
+        env:
+          BUILDER: ${{ matrix.builder }}
+          TARGET: ${{ matrix.target }}
+        run: |
+          case "$BUILDER" in cargo|cross) ;; *) exit 1 ;; esac
+          "$BUILDER" build --target "$TARGET" --locked
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ env.BIN_NAME }}-${{ matrix.target }}
           path: target/${{ matrix.target }}/debug/${{ env.BIN_NAME }}${{ contains(matrix.target, 'windows') && '.exe' || '' }}
