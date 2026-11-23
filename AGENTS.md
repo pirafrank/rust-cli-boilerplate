@@ -46,6 +46,7 @@ Commented-out dependencies in `Cargo.toml` (for example `dirs`, `tempfile`, `ass
 - Rust toolchain: **stable**, as set in `rust-toolchain.toml`, with `rustfmt`, `clippy`, and
   `llvm-tools-preview`.
 - Edition: **2021**. `Cargo.toml` declares the MSRV in `rust-version`.
+- MSRV is `rust-version` in `Cargo.toml`; `.github/workflows/msrv.yml` reads it from there.
 - Release targets are defined in `matrix.jsonc`: Linux (gnu and musl, x86_64 and aarch64), macOS
   (x86_64 and aarch64), and Windows (msvc x86_64/aarch64, gnu x86_64). Keep `matrix.jsonc`,
   `rust-toolchain.toml`, and the workflows consistent when adding or removing a target.
