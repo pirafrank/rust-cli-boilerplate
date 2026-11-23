@@ -37,6 +37,7 @@ scripts/release/             # release tooling: build-environment records, asset
 .github/rulesets/            # importable branch rulesets
 matrix.jsonc                 # build matrix (OS, target, builder) shared by workflows
 justfile                     # authoritative task runner
+cargo-generate.toml          # cargo-generate settings (files left out of generated projects)
 cliff.toml                   # git-cliff changelog configuration
 deny.toml                    # cargo-deny license and advisory policy
 ```

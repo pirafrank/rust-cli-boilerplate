@@ -153,6 +153,25 @@ just init
 
    Then review the README and `AGENTS.md`. Run `just init --help` for non-interactive usage.
 
+### Alternative: using cargo-generate
+
+You can also create the project with [cargo-generate](https://github.com/cargo-generate/cargo-generate) instead of the GitHub template button:
+
+```bash
+cargo install cargo-generate
+cargo generate --git https://github.com/pirafrank/rust-cli-boilerplate --name my-tool
+cd my-tool
+```
+
+`cargo-generate` initializes a fresh Git repository whose files are not yet tracked, while `just init` only processes tracked files. Stage everything first, then run the customization script:
+
+```bash
+git add -A
+just init
+```
+
+Then continue with the next step.
+
 4. Setup the enviroment and make the first build:
 
 ```bash
