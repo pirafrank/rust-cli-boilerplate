@@ -21,3 +21,6 @@ updates:
       actions-updates:
         patterns:
           - "*"  # Groups all GitHub Actions
+    ignore:
+      # v2 denies warnings via CARGO_BUILD_WARNINGS; skip until the project is ready for it.
+      - dependency-name: "actions-rust-lang/setup-rust-toolchain"
