@@ -12,3 +12,12 @@ updates:
       security-updates:
         update-types: ["patch", "minor"]
 
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions-updates:
+        patterns:
+          - "*"  # Groups all GitHub Actions
