@@ -5,28 +5,31 @@ on:
     branches:
       - pre/**
     paths:
+      - '.github/**'
       - '**/Cargo.toml'
       - '**/Cargo.lock'
+      - 'deny.toml'
   pull_request:
     branches:
       - main
     paths:
+      - '.github/**'
       - '**/Cargo.toml'
       - '**/Cargo.lock'
+      - 'deny.toml'
   workflow_dispatch:
 
-permissions:
-  checks: write
-  contents: read
-  pull-requests: write
+permissions: {}
 
 jobs:
   licenses_check:
+    permissions:
+      contents: read
     name: Licenses check
     runs-on: ubuntu-latest
     steps:
       - name: Clone repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
@@ -35,7 +38,7 @@ jobs:
         run: cargo install cargo-deny --locked
 
       - name: Setup just runner
-        uses: extractions/setup-just@v2
+        uses: extractions/setup-just@v4
 
       - name: Perform compliance checks
         run: just licenses
