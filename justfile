@@ -2,7 +2,7 @@
 # This must be the first recipe in the file
 
 # Set default shell based on OS
-set windows-powershell
+set windows-shell := ["bash", "-euc"]
 
 # List available recipes
 default:
@@ -11,6 +11,14 @@ default:
 # Install git hooks
 install-hooks:
   git config core.hooksPath hooks
+
+# Customize the template (asks for names, description, author): just init [--help]
+[unix]
+init *args:
+  python3 hooks_scripts/init_template.py {{args}}
+[windows]
+init *args:
+  python hooks_scripts/init_template.py {{args}}
 
 # Install required cargo plugins for recipes to run
 install-cargo-plugins:
@@ -35,6 +43,10 @@ build:
 # Run all tests
 test:
   cargo test -- --nocapture
+
+# Run the tests of the template initialization script
+test-init:
+  python3 hooks_scripts/test_init_template.py
 
 # Run only integration tests
 test-integration:
