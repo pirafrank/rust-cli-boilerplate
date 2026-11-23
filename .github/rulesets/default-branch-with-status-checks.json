@@ -48,7 +48,7 @@
         "do_not_enforce_on_create": false,
         "required_status_checks": [
           {
-            "context": "CI checks (macos-14)",
+            "context": "CI checks (macos-15)",
             "integration_id": 15368
           },
           {
@@ -56,27 +56,7 @@
             "integration_id": 15368
           },
           {
-            "context": "Build for aarch64-apple-darwin",
-            "integration_id": 15368
-          },
-          {
-            "context": "Build for aarch64-unknown-linux-gnu",
-            "integration_id": 15368
-          },
-          {
-            "context": "Build for aarch64-unknown-linux-musl",
-            "integration_id": 15368
-          },
-          {
-            "context": "Build for x86_64-apple-darwin",
-            "integration_id": 15368
-          },
-          {
-            "context": "Build for x86_64-unknown-linux-gnu",
-            "integration_id": 15368
-          },
-          {
-            "context": "Build for x86_64-unknown-linux-musl",
+            "context": "CI checks (windows-2025)",
             "integration_id": 15368
           }
         ]

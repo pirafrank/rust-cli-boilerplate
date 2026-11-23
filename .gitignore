@@ -59,3 +59,9 @@ data/*
 
 # generated man pages
 man/
+
+# release tooling
+scripts/release/.venv/
+__pycache__/
+*.egg-info/
+build/

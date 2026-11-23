@@ -2,23 +2,25 @@ name: CI
 run-name: CI on ${{ github.ref_name }}
 
 on:
-  push:
-    branches-ignore:
-      - main
-    paths-ignore:
-      - '**/*.md'
-      - '**/*.json'
-      - '**/*.yml'
-      - '**/*.yaml'
-      - '**/*.txt'
   pull_request:
-    paths-ignore:
-      - '**/*.md'
-      - '**/*.json'
-      - '**/*.yml'
-      - '**/*.yaml'
-      - '**/*.txt'
+    paths:
+      - '.github/**'
+      - 'justfile'
+      - '**/*.rs'
+      - '**/*.ron'
+      - '**/*.toml'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'clippy.toml'
+      - 'rust-toolchain.toml'
+      - 'rustfmt.toml'
+      - 'scripts/release/**'
+      - 'matrix.jsonc'
+  workflow_call:
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   ci_checks:
@@ -26,18 +28,39 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-24.04, macos-14, windows-2022]
+        os: [ubuntu-24.04, macos-15, windows-2025]
       # Fail fast!
       fail-fast: true
     steps:
       - name: Clone repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1
 
       - name: Setup just runner
-        uses: extractions/setup-just@v2
+        uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4
+
+      - name: Setup Python
+        if: runner.os == 'Linux'
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with:
+          python-version: '3.12'
+
+      - name: Run release script tests
+        if: runner.os == 'Linux'
+        working-directory: scripts/release
+        run: |
+          ./setup_venv.sh
+          . ./.venv/bin/activate
+          echo "Running release script tests..."
+          ./run_tests.sh
+          echo "Running JSON Schema validation..."
+          ./run_schema_validation.sh
+          deactivate
 
       - name: Perform CI checks
         run: just ci
+
+      - name: Generate man pages
+        run: just man
