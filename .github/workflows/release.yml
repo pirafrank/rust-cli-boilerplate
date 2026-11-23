@@ -145,7 +145,7 @@ jobs:
         uses: ./.github/actions/compress-and-archive
         with:
           filenamebase: ${{ needs.checks.outputs.APP_NAME }}-${{ needs.checks.outputs.APP_VERSION }}-${{ matrix.target }}
-          files: LICENSE README.md
+          files: LICENSE README.md SECURITY.md
           binary_path: target/${{ matrix.target }}/release/${{ env.BIN_NAME }}${{ runner.os == 'Windows' && '.exe' || '' }}
 
       - name: Record release build environment
