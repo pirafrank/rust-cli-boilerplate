@@ -78,7 +78,7 @@ jobs:
           "$BUILDER" build --target "$TARGET" --locked
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: ${{ env.BIN_NAME }}-${{ matrix.target }}
           path: target/${{ matrix.target }}/debug/${{ env.BIN_NAME }}${{ contains(matrix.target, 'windows') && '.exe' || '' }}
