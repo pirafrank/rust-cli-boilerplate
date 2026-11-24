@@ -59,7 +59,7 @@ jobs:
         run: just man
 
       - name: Upload man pages artifact
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ needs.checks.outputs.APP_NAME }}.1
           path: man/${{ needs.checks.outputs.APP_NAME }}.1
@@ -110,7 +110,7 @@ jobs:
         uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4
 
       - name: Setup Python
-        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.12'
 
@@ -168,7 +168,7 @@ jobs:
           mkdir -p _sbom
           cp Cargo.toml Cargo.lock _sbom/
       - name: Generate release SBOM
-        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0
+        uses: anchore/sbom-action@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
         with:
           path: _sbom
           syft-version: v1.55.0  # latest as of 2026-11-02.
@@ -205,7 +205,7 @@ jobs:
             gh attestation verify "$subject" --repo "$REPOSITORY" --signer-workflow "$REPOSITORY/.github/workflows/release.yml" --source-ref "$SOURCE_REF" --source-digest "$SOURCE_DIGEST" --predicate-type https://spdx.dev/Document/v2.3
           done
       - name: Upload target release assets
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: release-${{ matrix.target }}
           path: |
@@ -228,7 +228,7 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Download build outputs
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: '{release-*,${{ needs.checks.outputs.APP_NAME }}.1}'
           path: incoming
@@ -241,7 +241,7 @@ jobs:
           python3 scripts/release/finalize_assets.py --source incoming \
             --destination artifacts --name "$NAME" --version "$VERSION" --matrix "$MATRIX"
       - name: Install Cosign
-        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        uses: sigstore/cosign-installer@756fe2d284c7292c4e9b62c8a28f1e5629c59532 # v4.1.3
         with:
           cosign-release: v3.1.4
       - name: Sign and verify checksum manifest
@@ -258,7 +258,7 @@ jobs:
             --certificate-oidc-issuer https://token.actions.githubusercontent.com "$manifest"
           sha256sum --check "$manifest"
       - name: Upload finalized release assets
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: finalized-release-assets
           path: artifacts/*
@@ -276,7 +276,7 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Download finalized release assets
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: finalized-release-assets
           path: artifacts
